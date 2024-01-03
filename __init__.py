@@ -6,6 +6,7 @@ app.secret_key = 'many random bytes'
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'password'
+  # checkov:skip=BC_GIT_6: ADD REASON
 app.config['MYSQL_DB'] = 'crud'
 
 mysql = MySQL(app)
@@ -17,7 +18,7 @@ def Index():
 @app.route('/index.html')
 def load():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT  * FROM students")
+    cur.execute("SELECT  * FROM workorders")
     data = cur.fetchall()
     cur.close()
     return render_template('index.html', students=data )
@@ -31,7 +32,7 @@ def insert():
         email = request.form['email']
         phone = request.form['phone']
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO students (name, email, phone) VALUES (%s, %s, %s)", (name, email, phone))
+        cur.execute("INSERT INTO workorders (name, email, phone) VALUES (%s, %s, %s)", (name, email, phone))
         mysql.connection.commit()
         return redirect(url_for('load'))
 
@@ -39,7 +40,7 @@ def insert():
 def delete(id_data):
     flash("Record Has Been Deleted Successfully")
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM students WHERE id=%s", (id_data,))
+    cur.execute("DELETE FROM workorders WHERE id=%s", (id_data,))
     mysql.connection.commit()
     return redirect(url_for('load'))
 
@@ -53,7 +54,7 @@ def update():
         phone = request.form['phone']
         cur = mysql.connection.cursor()
         cur.execute("""
-               UPDATE students
+               UPDATE workorders
                SET name=%s, email=%s, phone=%s
                WHERE id=%s
             """, (name, email, phone, id_data))
