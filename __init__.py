@@ -12,13 +12,15 @@ mysql = MySQL(app)
 
 @app.route('/')
 def Index():
+    return render_template('header.html')
+
+@app.route('/index.html')
+def load():
     cur = mysql.connection.cursor()
     cur.execute("SELECT  * FROM students")
     data = cur.fetchall()
     cur.close()
     return render_template('index.html', students=data )
-
-
 
 @app.route('/insert', methods = ['POST'])
 def insert():
@@ -31,7 +33,7 @@ def insert():
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO students (name, email, phone) VALUES (%s, %s, %s)", (name, email, phone))
         mysql.connection.commit()
-        return redirect(url_for('Index'))
+        return redirect(url_for('load'))
 
 @app.route('/delete/<string:id_data>', methods = ['GET'])
 def delete(id_data):
@@ -39,7 +41,7 @@ def delete(id_data):
     cur = mysql.connection.cursor()
     cur.execute("DELETE FROM students WHERE id=%s", (id_data,))
     mysql.connection.commit()
-    return redirect(url_for('Index'))
+    return redirect(url_for('load'))
 
 @app.route('/update',methods=['POST','GET'])
 def update():
@@ -57,7 +59,7 @@ def update():
             """, (name, email, phone, id_data))
         flash("Data Updated Successfully")
         mysql.connection.commit()
-        return redirect(url_for('Index'))
+        return redirect(url_for('load'))
 
 if __name__ == "__main__":
     app.run(debug=True)
