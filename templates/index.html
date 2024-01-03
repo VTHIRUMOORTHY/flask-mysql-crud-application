@@ -1,5 +1,23 @@
 <link href="{{url_for('static', filename = 'css/bootstrap.min.css')}}" rel="stylesheet">
 
+<style>
+   a {
+      text-decoration: none;
+      display: inline-block;
+      padding: 8px 16px;
+   }
+
+   a:hover {
+      background-color: #ddd;
+      color: black;
+   }
+
+   .previous {
+      background-color: #f1f1f1;
+      color: black;
+   }
+</style>
+
 {% block body %}
 <div class="container">
    <div class="row">
@@ -8,9 +26,7 @@
                data-target="#myModal">Add Student Data</button></h2>
 
          {%with messages = get_flashed_messages()%}
-
          {%if messages%}
-
          {% for message in messages %}
 
          <div class="alert alert-success alert-dismissable" role="alert">
@@ -89,7 +105,7 @@
             {% endfor %}
             </tbody>
          </table>
-
+         <a href="/" class="previous" style="float:right">&laquo; Back</a>
       </div>
 
       <!-- Modal -->
@@ -124,7 +140,7 @@
                   </form>
 
                </div>
-               
+
                <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                </div>
