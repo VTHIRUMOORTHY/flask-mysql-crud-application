@@ -18,7 +18,7 @@ def Index():
 @app.route('/index.html')
 def load():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT  * FROM workorders")
+    cur.execute("SELECT  * FROM students")
     data = cur.fetchall()
     cur.close()
     return render_template('index.html', students=data )
@@ -32,7 +32,7 @@ def insert():
         email = request.form['email']
         phone = request.form['phone']
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO workorders (name, email, phone) VALUES (%s, %s, %s)", (name, email, phone))
+        cur.execute("INSERT INTO students (name, email, phone) VALUES (%s, %s, %s)", (name, email, phone))
         mysql.connection.commit()
         return redirect(url_for('load'))
 
@@ -40,7 +40,7 @@ def insert():
 def delete(id_data):
     flash("Record Has Been Deleted Successfully")
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM workorders WHERE id=%s", (id_data,))
+    cur.execute("DELETE FROM students WHERE id=%s", (id_data,))
     mysql.connection.commit()
     return redirect(url_for('load'))
 
@@ -54,7 +54,7 @@ def update():
         phone = request.form['phone']
         cur = mysql.connection.cursor()
         cur.execute("""
-               UPDATE workorders
+               UPDATE students
                SET name=%s, email=%s, phone=%s
                WHERE id=%s
             """, (name, email, phone, id_data))
